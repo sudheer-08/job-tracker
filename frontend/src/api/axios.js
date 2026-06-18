@@ -3,6 +3,11 @@ import { getStoredToken, clearAuthStorage } from "../utils/authStorage";
 
 const PRODUCTION_API_URL = "https://job-tracker-wyhp.onrender.com";
 
+// Render + Vercel environments: always prefer VITE_API_URL when provided.
+// Vercel sets import.meta.env.PROD=true, but we still don't want to hard-fallback
+// to an unexpected value.
+
+
 const normalizeApiUrl = (url) => {
   if (!url) return null;
   if (url.startsWith("http://") || url.startsWith("https://")) return url.replace(/\/$/, "");
@@ -13,13 +18,14 @@ const resolveBaseURL = () => {
   const envUrl = normalizeApiUrl(import.meta.env.VITE_API_URL);
 
   if (import.meta.env.PROD) {
-    if (envUrl && !envUrl.includes("localhost")) {
-      return envUrl;
-    }
+    // In production (Vercel/Render builds), prefer VITE_API_URL if provided.
+    // If it's missing, fall back to the known Render API URL.
+    if (envUrl && !envUrl.includes("localhost")) return envUrl;
     return PRODUCTION_API_URL;
   }
 
   return envUrl || "http://localhost:5000";
+
 };
 
 const api = axios.create({

@@ -8,6 +8,8 @@ import dashboardRoutes from "./routes/dashboard.routes.js";
 import noteRoutes from "./routes/note.routes.js";
 import reminderRoutes from "./routes/reminder.routes.js";
 import documentRoutes from "./routes/document.routes.js";
+// Add this to your existing app.js
+import resumeRoutes from "./routes/resume.routes.js";
 
 const app = express();
 
@@ -15,6 +17,7 @@ const allowedOrigins = [
   process.env.FRONTEND_URL,
   "http://localhost:5173",
 ].filter(Boolean);
+
 
 app.use(
   cors({
@@ -53,5 +56,6 @@ app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/notes", noteRoutes);
 app.use("/api/reminders", reminderRoutes);
 app.use("/api/documents", documentRoutes);
+app.use('/api/resume', resumeRoutes);
 
 export default app;

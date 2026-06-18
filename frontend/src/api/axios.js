@@ -1,8 +1,14 @@
 import axios from "axios";
 import { getStoredToken, clearAuthStorage } from "../utils/authStorage";
 
+const normalizeApiUrl = (url) => {
+  if (!url) return "http://localhost:5000";
+  if (url.startsWith("http://") || url.startsWith("https://")) return url.replace(/\/$/, "");
+  return `https://${url.replace(/\/$/, "")}`;
+};
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000",
+  baseURL: normalizeApiUrl(import.meta.env.VITE_API_URL),
   headers: {
     "Content-Type": "application/json",
   },

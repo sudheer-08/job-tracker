@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
-import authRoutes from "./routes/auth.routes.js";
-import applicationRoutes from "./routes/application.routes.js";
+import prisma from "./config/prisma.js";
+import authRoutes from "./routes/auth.routes.js";import applicationRoutes from "./routes/application.routes.js";
 import statusHistoryRoutes from "./routes/statusHistory.routes.js";
 import dashboardRoutes from "./routes/dashboard.routes.js";
 import noteRoutes from "./routes/note.routes.js";
@@ -32,8 +32,20 @@ app.use(
 );
 app.use(express.json());
 
-app.use("/api/auth", authRoutes);
-app.use("/api/applications", statusHistoryRoutes);
+app.get("/health", async (_req, res) => {
+  try {
+    await prisma.$queryRaw`SELECT 1`;
+    res.json({ status: "ok", database: "connected" });
+  } catch (error) {
+    res.status(503).json({
+      status: "error",
+      database: "disconnected",
+      message: error.message,
+    });
+  }
+});
+
+app.use("/api/auth", authRoutes);app.use("/api/applications", statusHistoryRoutes);
 app.use("/api/applications", applicationRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/notes", noteRoutes);

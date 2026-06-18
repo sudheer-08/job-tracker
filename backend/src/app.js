@@ -1,7 +1,8 @@
 import express from "express";
 import cors from "cors";
 import prisma from "./config/prisma.js";
-import authRoutes from "./routes/auth.routes.js";import applicationRoutes from "./routes/application.routes.js";
+import authRoutes from "./routes/auth.routes.js";
+import applicationRoutes from "./routes/application.routes.js";
 import statusHistoryRoutes from "./routes/statusHistory.routes.js";
 import dashboardRoutes from "./routes/dashboard.routes.js";
 import noteRoutes from "./routes/note.routes.js";
@@ -45,7 +46,8 @@ app.get("/health", async (_req, res) => {
   }
 });
 
-app.use("/api/auth", authRoutes);app.use("/api/applications", statusHistoryRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/applications", statusHistoryRoutes);
 app.use("/api/applications", applicationRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/notes", noteRoutes);

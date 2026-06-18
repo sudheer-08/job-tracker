@@ -14,8 +14,6 @@ services:
         value: 1d
       - key: DATABASE_URL
         sync: false
-      - key: DIRECT_URL
-        sync: false
       - key: JWT_SECRET
         sync: false
       - key: CLOUDINARY_CLOUD_NAME

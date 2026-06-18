@@ -15,6 +15,9 @@ export const register = async (req, res) => {
       return res.status(409).json({ error: error.message });
     }
     console.error("Register Error:", error);
+    if (error.code?.startsWith("P")) {
+      return res.status(503).json({ error: "Database unavailable. Check server configuration." });
+    }
     res.status(500).json({ error: "Internal server error" });
   }
 };
@@ -34,6 +37,9 @@ export const login = async (req, res) => {
       return res.status(401).json({ error: error.message });
     }
     console.error("Login Error:", error);
+    if (error.code?.startsWith("P")) {
+      return res.status(503).json({ error: "Database unavailable. Check server configuration." });
+    }
     res.status(500).json({ error: "Internal server error" });
   }
 };

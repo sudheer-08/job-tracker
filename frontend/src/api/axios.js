@@ -1,14 +1,29 @@
 import axios from "axios";
 import { getStoredToken, clearAuthStorage } from "../utils/authStorage";
 
+const PRODUCTION_API_URL = "https://job-tracker-wyhp.onrender.com";
+
 const normalizeApiUrl = (url) => {
-  if (!url) return "http://localhost:5000";
+  if (!url) return null;
   if (url.startsWith("http://") || url.startsWith("https://")) return url.replace(/\/$/, "");
   return `https://${url.replace(/\/$/, "")}`;
 };
 
+const resolveBaseURL = () => {
+  const envUrl = normalizeApiUrl(import.meta.env.VITE_API_URL);
+
+  if (import.meta.env.PROD) {
+    if (envUrl && !envUrl.includes("localhost")) {
+      return envUrl;
+    }
+    return PRODUCTION_API_URL;
+  }
+
+  return envUrl || "http://localhost:5000";
+};
+
 const api = axios.create({
-  baseURL: normalizeApiUrl(import.meta.env.VITE_API_URL),
+  baseURL: resolveBaseURL(),
   headers: {
     "Content-Type": "application/json",
   },

@@ -9,6 +9,7 @@ import Dashboard from "./pages/Dashboard";
 import ApplicationsList from "./pages/applications/ApplicationsList";
 import CreateApplication from "./pages/applications/CreateApplication";
 import EditApplication from "./pages/applications/EditApplication";
+import ResumePage from "./pages/resumePage";
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
               <Route path="/applications" element={<ApplicationsList />} />
               <Route path="/applications/new" element={<CreateApplication />} />
               <Route path="/applications/:id/edit" element={<EditApplication />} />
+              <Route path="/resume" element={<ResumePage />} />
             </Route>
           </Route>
 

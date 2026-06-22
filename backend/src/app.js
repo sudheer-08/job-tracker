@@ -10,6 +10,7 @@ import reminderRoutes from "./routes/reminder.routes.js";
 import documentRoutes from "./routes/document.routes.js";
 // Add this to your existing app.js
 import resumeRoutes from "./routes/resume.routes.js";
+import interviewRoutes from"./routes/interview.routes.js";
 
 const app = express();
 
@@ -57,5 +58,6 @@ app.use("/api/notes", noteRoutes);
 app.use("/api/reminders", reminderRoutes);
 app.use("/api/documents", documentRoutes);
 app.use('/api/resume', resumeRoutes);
+app.use("/api/interview", interviewRoutes);
 
 export default app;

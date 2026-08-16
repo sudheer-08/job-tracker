@@ -5,6 +5,7 @@ const navItems = [
   { to: "/dashboard", label: "Dashboard", icon: "◫" },
   { to: "/applications", label: "Applications", icon: "☰" },
   { to: "/resume", label: "Resume Analyzer", icon: "📄" },
+  { to: "/interview", label: "Mock Interview", icon: "💬" },
 ];
 
 const Sidebar = () => {

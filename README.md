@@ -14,6 +14,8 @@ A full-stack job application tracker for managing your job search pipeline — f
 - **Documents** — Upload resumes and related files (stored via Cloudinary)
 - **Soft delete** — Move applications to trash and restore them later
 - **Follow-up reminders** — Overdue, due today, and upcoming follow-ups based on follow-up dates
+- **Resume Analyzer** — Analyze a resume against a job description to get structured feedback
+
 
 ## Tech Stack
 
@@ -134,9 +136,17 @@ cd backend
 npm start
 ```
 
+## Resume Analyzer
+
+The app includes a Resume Analyzer page at `/resume`.
+
+- **Backend:** `POST /api/resume/analyze`
+- **Purpose:** analyze an uploaded resume against a provided job description and return structured feedback.
+
 ## API Overview
 
 All protected routes require a `Authorization: Bearer <token>` header.
+
 
 | Endpoint | Description |
 | -------- | ----------- |
@@ -153,8 +163,10 @@ All protected routes require a `Authorization: Bearer <token>` header.
 | `GET/POST /api/notes` | Application notes |
 | `POST /api/documents` | Upload a document |
 | `GET /api/documents/:applicationId` | List documents for an application |
+| `POST /api/resume/analyze` | Analyze a resume against a job description |
 
 ## Application Pipeline
+
 
 ```
 APPLIED → SCREENING → INTERVIEW → OFFER

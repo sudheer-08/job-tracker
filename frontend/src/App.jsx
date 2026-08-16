@@ -10,6 +10,8 @@ import ApplicationsList from "./pages/applications/ApplicationsList";
 import CreateApplication from "./pages/applications/CreateApplication";
 import EditApplication from "./pages/applications/EditApplication";
 import ResumePage from "./pages/resumePage";
+import InterviewDashboard from "./pages/interview/InterviewDashboard";
+import InterviewSession from "./pages/interview/InterviewSession";
 
 const App = () => {
   return (
@@ -28,6 +30,8 @@ const App = () => {
               <Route path="/applications/new" element={<CreateApplication />} />
               <Route path="/applications/:id/edit" element={<EditApplication />} />
               <Route path="/resume" element={<ResumePage />} />
+              <Route path="/interview" element={<InterviewDashboard />} />
+              <Route path="/interview/:id" element={<InterviewSession />} />
             </Route>
           </Route>
 

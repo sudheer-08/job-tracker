@@ -26,10 +26,10 @@ app.use(
     origin(origin, callback) {
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
-      } else if (/^https:\/\/[\w-]+\.vercel\.app$/.test(origin)) {
+      } else if (/^https:\/\/.*\.vercel\.app$/.test(origin)) {
         callback(null, true);
       } else {
-        callback(new Error(`CORS blocked for origin: ${origin}`));
+        callback(null, false);
       }
     },
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],

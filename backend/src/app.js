@@ -12,6 +12,7 @@ import documentRoutes from "./routes/document.routes.js";
 import resumeRoutes from "./routes/resume.routes.js";
 import interviewRoutes from"./routes/interview.routes.js";
 
+
 const app = express();
 
 const allowedOrigins = [

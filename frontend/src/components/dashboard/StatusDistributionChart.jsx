@@ -11,7 +11,7 @@ const StatusDistributionChart = ({ data }) => {
       <p className="mt-1 text-sm text-slate-500">Breakdown by application status</p>
       <div className="mt-4 h-72">
         {chartData.length ? (
-          <ResponsiveContainer width="100%" height="100%">
+          <ResponsiveContainer width="100%" height="100%" minHeight={300} minWidth={0}>
             <PieChart>
               <Pie
                 data={chartData}

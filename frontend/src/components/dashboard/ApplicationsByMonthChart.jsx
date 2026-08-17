@@ -14,7 +14,7 @@ const ApplicationsByMonthChart = ({ data }) => (
     <p className="mt-1 text-sm text-slate-500">New applications over the last 6 months</p>
     <div className="mt-4 h-72">
       {data?.length ? (
-        <ResponsiveContainer width="100%" height="100%">
+        <ResponsiveContainer width="100%" height="100%" minHeight={300} minWidth={0}>
           <BarChart data={data}>
             <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
             <XAxis dataKey="label" tick={{ fontSize: 12 }} stroke="#94a3b8" />

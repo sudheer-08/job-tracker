@@ -50,7 +50,7 @@ export const analyzeResumeController = async (req, res) => {
       analysis,
     });
   } catch (error) {
-    console.error("Resume Analysis Error:", error);
+    console.error("Resume Analysis Error Detail:", error.response?.data || error.message);
 
     return res.status(500).json({
       success: false,

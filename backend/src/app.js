@@ -28,7 +28,7 @@ const corsOptions = {
     } else if (/^https:\/\/.*\.vercel\.app$/.test(origin)) {
       callback(null, true);
     } else {
-      callback(null, false);
+      callback(new Error("Not allowed by CORS"));
     }
   },
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
@@ -37,7 +37,12 @@ const corsOptions = {
   optionsSuccessStatus: 200,
 };
 
+// Apply CORS middleware globally (before all routes)
 app.use(cors(corsOptions));
+
+// Explicitly handle preflight requests for all routes
+app.options("*", cors(corsOptions));
+
 app.use(express.json());
 
 app.get("/health", async (_req, res) => {

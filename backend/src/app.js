@@ -50,7 +50,7 @@ const corsOptions = {
 // Must come BEFORE cors() + routes. This guarantees every OPTIONS request
 // gets a 200 with the correct CORS headers, even if downstream middleware
 // or Express 5 error handling interferes.
-app.options("*", cors(corsOptions));
+app.options("/{*splat}", cors(corsOptions));
 
 // Apply CORS middleware globally (must be before all route declarations)
 app.use(cors(corsOptions));

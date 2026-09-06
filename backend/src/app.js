@@ -15,29 +15,36 @@ import interviewRoutes from"./routes/interview.routes.js";
 
 const app = express();
 
-const allowedOrigins = [
-  "https://job-tracker-sand-five-83.vercel.app", // production frontend (hardcoded as safety net)
-  process.env.FRONTEND_URL,                       // override via Render env var if needed
-  "http://localhost:5173",                        // Vite dev server
-  "http://localhost:3000",                        // CRA dev server
-].filter(Boolean);
+// ── CORS configuration ──────────────────────────────────────────────────
+// Explicit origins from environment variables + local dev servers
+const explicitOrigins = [
+  process.env.CLIENT_URL,
+  process.env.FRONTEND_URL,
+  "http://localhost:3000",
+  "http://localhost:5173",
+].filter(Boolean).map((url) => url.replace(/\/$/, ""));
 
 const corsOptions = {
   origin(origin, callback) {
-    // Allow server-to-server requests (no Origin header)
+    // Allow requests with no origin (mobile apps, Postman, server-to-server)
     if (!origin) return callback(null, true);
 
-    if (allowedOrigins.includes(origin)) {
+    const cleanOrigin = origin.replace(/\/$/, "");
+
+    // Allow any *.vercel.app deployment URL (covers preview + production)
+    const isVercelApp = /\.vercel\.app$/.test(cleanOrigin);
+    const isExplicitAllowed = explicitOrigins.includes(cleanOrigin);
+
+    if (isVercelApp || isExplicitAllowed) {
       return callback(null, true);
     }
 
     // Diagnostic log — visible in Render's log stream
-    console.warn(`[CORS] Rejected origin: "${origin}"`);
+    console.warn(`[CORS] Blocked origin: "${origin}"`);
     // Use `callback(null, false)` instead of `callback(new Error(...))`.
     // Throwing an error in Express 5 causes the response to be sent without
-    // CORS headers, so the browser reports a confusing CORS failure instead
-    // of a clear 403. Using `false` lets the cors middleware finish normally
-    // (the response simply won't include Access-Control-Allow-Origin).
+    // CORS headers, so the browser sees a confusing CORS failure instead
+    // of a clear block.
     callback(null, false);
   },
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
@@ -47,9 +54,8 @@ const corsOptions = {
 };
 
 // ── Explicit preflight handler ──────────────────────────────────────────
-// Must come BEFORE cors() + routes. This guarantees every OPTIONS request
-// gets a 200 with the correct CORS headers, even if downstream middleware
-// or Express 5 error handling interferes.
+// Must come BEFORE cors() + routes. Guarantees every OPTIONS request gets
+// a 200 with proper CORS headers (Express 5 compatibility).
 app.options("/{*splat}", cors(corsOptions));
 
 // Apply CORS middleware globally (must be before all route declarations)

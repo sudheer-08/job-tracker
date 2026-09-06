@@ -39,10 +39,6 @@ const corsOptions = {
 
 // Apply CORS middleware globally (before all routes)
 app.use(cors(corsOptions));
-
-// Explicitly handle preflight requests for all routes
-app.options("*", cors(corsOptions));
-
 app.use(express.json());
 
 app.get("/health", async (_req, res) => {

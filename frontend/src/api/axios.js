@@ -1,7 +1,7 @@
 import axios from "axios";
 import { getStoredToken, clearAuthStorage } from "../utils/authStorage";
 
-const PRODUCTION_API_URL = "https://job-tracker-wyhp.onrender.com";
+const PRODUCTION_API_URL = "https://job-tracker-5jgb.onrender.com";
 
 // Render + Vercel environments: always prefer VITE_API_URL when provided.
 // Vercel sets import.meta.env.PROD=true, but we still don't want to hard-fallback

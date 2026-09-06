@@ -16,20 +16,29 @@ import interviewRoutes from"./routes/interview.routes.js";
 const app = express();
 
 const allowedOrigins = [
-  process.env.FRONTEND_URL,
-  "http://localhost:5173",
+  "https://job-tracker-sand-five-83.vercel.app", // production frontend (hardcoded as safety net)
+  process.env.FRONTEND_URL,                       // override via Render env var if needed
+  "http://localhost:5173",                        // Vite dev server
+  "http://localhost:3000",                        // CRA dev server
 ].filter(Boolean);
-
 
 const corsOptions = {
   origin(origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else if (/^https:\/\/.*\.vercel\.app$/.test(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
+    // Allow server-to-server requests (no Origin header)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
     }
+
+    // Diagnostic log — visible in Render's log stream
+    console.warn(`[CORS] Rejected origin: "${origin}"`);
+    // Use `callback(null, false)` instead of `callback(new Error(...))`.
+    // Throwing an error in Express 5 causes the response to be sent without
+    // CORS headers, so the browser reports a confusing CORS failure instead
+    // of a clear 403. Using `false` lets the cors middleware finish normally
+    // (the response simply won't include Access-Control-Allow-Origin).
+    callback(null, false);
   },
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
@@ -37,7 +46,13 @@ const corsOptions = {
   optionsSuccessStatus: 200,
 };
 
-// Apply CORS middleware globally (before all routes)
+// ── Explicit preflight handler ──────────────────────────────────────────
+// Must come BEFORE cors() + routes. This guarantees every OPTIONS request
+// gets a 200 with the correct CORS headers, even if downstream middleware
+// or Express 5 error handling interferes.
+app.options("*", cors(corsOptions));
+
+// Apply CORS middleware globally (must be before all route declarations)
 app.use(cors(corsOptions));
 app.use(express.json());
 
